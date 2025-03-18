@@ -17,18 +17,18 @@ function App() {
       if (disable) {
         // Save the current scroll position
         const scrollY = window.scrollY;
-        document.body.style.position = 'fixed';
+        document.body.style.position = "fixed";
         document.body.style.top = `-${scrollY}px`;
-        document.body.style.width = '100%';
-        document.body.style.overflowY = 'scroll';
+        document.body.style.width = "100%";
+        document.body.style.overflowY = "scroll";
       } else {
         // Restore the scroll position
         const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflowY = '';
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflowY = "";
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
       }
     };
 
@@ -99,14 +99,18 @@ function App() {
     const startDate = formatGoogleCalendarDate(item.datetime_start_date);
     const endDate = formatGoogleCalendarDate(item.datetime_end_date);
     const title = encodeURIComponent(
-      item.text_display_title?.all ? decodeHtml(item.text_display_title.all) : ""
+      item.text_display_title?.all
+        ? decodeHtml(item.text_display_title.all)
+        : ""
     );
 
     // Get location information if available
     let location = "";
     if (item.ref_local && related[item.ref_local]) {
       const locationObj = related[item.ref_local];
-      const locationName = locationObj._title?.all ? decodeHtml(locationObj._title.all) : "";
+      const locationName = locationObj._title?.all
+        ? decodeHtml(locationObj._title.all)
+        : "";
       const locationAddress = locationObj.text_morada?.all || "";
 
       if (locationName && locationAddress) {
@@ -203,7 +207,10 @@ function App() {
                     <strong>Data:</strong>{" "}
                     {formatDateTime(item.datetime_start_date)}
                   </p>
-                  {!isSameDay(item.datetime_start_date, item.datetime_end_date) && (
+                  {!isSameDay(
+                    item.datetime_start_date,
+                    item.datetime_end_date
+                  ) && (
                     <p>
                       <strong>Até:</strong>{" "}
                       {formatDateTime(item.datetime_end_date)}
@@ -246,11 +253,16 @@ function App() {
             <div className="popover-date-actions">
               <div className="popover-dates">
                 <p>
-                  <strong>Início:</strong> {formatDateTime(selectedItem.datetime_start_date)}
+                  <strong>Início:</strong>{" "}
+                  {formatDateTime(selectedItem.datetime_start_date)}
                 </p>
-                {!isSameDay(selectedItem.datetime_start_date, selectedItem.datetime_end_date) && (
+                {!isSameDay(
+                  selectedItem.datetime_start_date,
+                  selectedItem.datetime_end_date
+                ) && (
                   <p>
-                    <strong>Fim:</strong> {formatDateTime(selectedItem.datetime_end_date)}
+                    <strong>Fim:</strong>{" "}
+                    {formatDateTime(selectedItem.datetime_end_date)}
                   </p>
                 )}
               </div>
@@ -272,77 +284,79 @@ function App() {
             />
 
             {/* Location information */}
-            {selectedItem.ref_local && related[selectedItem.ref_local] && (() => {
-              // Extract location object once to avoid repetitive lookups
-              const locationObj = related[selectedItem.ref_local];
+            {selectedItem.ref_local &&
+              related[selectedItem.ref_local] &&
+              (() => {
+                // Extract location object once to avoid repetitive lookups
+                const locationObj = related[selectedItem.ref_local];
 
-              return (
-                <div className="location-info">
-                  <h3>Localização</h3>
-                  <div className="location-container">
-                    {locationObj.image_image?.all && (
-                      <div className="location-image">
-                        <img
-                          src={locationObj.image_image.all}
-                          alt={
-                            locationObj._title?.all
-                              ? decodeHtml(locationObj._title.all)
-                              : "Location"
-                          }
-                        />
-                      </div>
-                    )}
-                    <div className="location-details">
-                      <h4>
-                        {locationObj._title?.all
-                          ? decodeHtml(locationObj._title.all)
-                          : ""}
-                      </h4>
-
-                      {locationObj.text_morada?.all && (
-                        <p className="location-address">
-                          <strong>Endereço:</strong>{" "}
-                          {locationObj.text_morada.all}
-                        </p>
+                return (
+                  <div className="location-info">
+                    <h3>Localização</h3>
+                    <div className="location-container">
+                      {locationObj.image_image?.all && (
+                        <div className="location-image">
+                          <img
+                            src={locationObj.image_image.all}
+                            alt={
+                              locationObj._title?.all
+                                ? decodeHtml(locationObj._title.all)
+                                : "Location"
+                            }
+                          />
+                        </div>
                       )}
+                      <div className="location-details">
+                        <h4>
+                          {locationObj._title?.all
+                            ? decodeHtml(locationObj._title.all)
+                            : ""}
+                        </h4>
 
-                      <div className="location-links">
-                        {locationObj.link_website?.all && (
-                          <a
-                            href={locationObj.link_website.all}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="location-link website-link"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            Website
-                          </a>
+                        {locationObj.text_morada?.all && (
+                          <p className="location-address">
+                            <strong>Endereço:</strong>{" "}
+                            {locationObj.text_morada.all}
+                          </p>
                         )}
 
-                        {locationObj.link_google_maps?.all && (
-                          <a
-                            href={locationObj.link_google_maps.all}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="location-link maps-link"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            Google Maps
-                          </a>
+                        <div className="location-links">
+                          {locationObj.link_website?.all && (
+                            <a
+                              href={locationObj.link_website.all}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="location-link website-link"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Website
+                            </a>
+                          )}
+
+                          {locationObj.link_google_maps?.all && (
+                            <a
+                              href={locationObj.link_google_maps.all}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="location-link maps-link"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Google Maps
+                            </a>
+                          )}
+                        </div>
+
+                        {locationObj.text_description?.all && (
+                          <SanitizedHTML
+                            html={locationObj.text_description.all}
+                            className="location-description"
+                          />
                         )}
                       </div>
-
-                      {locationObj.text_description?.all && (
-                        <SanitizedHTML
-                          html={locationObj.text_description.all}
-                          className="location-description"
-                        />
-                      )}
                     </div>
                   </div>
-                </div>
-              );
-            })()}
+                );
+              })()}
           </div>
         </div>
       )}
