@@ -1,0 +1,82 @@
+{
+    "repeaterId": "cDUzN6R14bU0s0UB",
+    "contentId": "0",
+    "detail": false,
+    "locale": "pt",
+    "items": [
+        {
+            "id": "f-n7tk9ddvPg",
+            "_slug": {
+                "all": "quiz-night"
+            },
+            "_title": {
+                "all": "Quiz night"
+            },
+            "link_link": {
+                "all": "https://www.apurobar.pt/events"
+            },
+            "ref_local": "sHVjYQz8TtzDwMuj",
+            "ref_seccao": "nG99KZNvGn",
+            "text_horas": {
+                "all": "20:00"
+            },
+            "image_image": {
+                "all": "https://cdn.bndlyr.com/snmlouf5g8jmtqva/_assets/nnb9dlS9Yu.jpg"
+            },
+            "text_morada": {
+                "all": ""
+            },
+            "text_sinopse": {
+                "all": "<p><strong>Noite de <em>Quiz</em></strong></p>"
+            },
+            "datetime_end_date": "2025-03-18T20:00:00.000Z",
+            "text_display_title": {
+                "all": "Quiz Night"
+            },
+            "datetime_start_date": "2025-03-18T20:00:00.000Z",
+            "text_email_remetente": {
+                "all": "veganpurista@gmail.com"
+            }
+        }
+    ],
+    "related": {
+        "sHVjYQz8TtzDwMuj": {
+            "id": "sHVjYQz8TtzDwMuj",
+            "_slug": {
+                "all": "apuro"
+            },
+            "_title": {
+                "all": "Apuro"
+            },
+            "image_image": {
+                "all": "https://cdn.bndlyr.com/snmlouf5g8jmtqva/_assets/118296821_164019835265013_11135929585481118_n.jpg"
+            },
+            "text_morada": {
+                "all": " R. do Breiner, 236"
+            },
+            "geo_location": {
+                "lat": 41.1509533,
+                "lon": -8.6203527
+            },
+            "link_website": {
+                "all": "https://oapuro.pt/"
+            },
+            "link_google_maps": {
+                "all": "https://maps.app.goo.gl/NKpkBZXTKd33pTU77"
+            },
+            "text_description": {
+                "all": "<p>Bar vegan</p>"
+            }
+        },
+        "nG99KZNvGn": {
+            "id": "nG99KZNvGn",
+            "_title": {
+                "all": "Famílias"
+            },
+            "text_display_title": {
+                "en": "Families",
+                "all": "Famílias"
+            }
+        }
+    }
+}
