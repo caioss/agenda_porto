@@ -272,72 +272,77 @@ function App() {
             />
 
             {/* Location information */}
-            {selectedItem.ref_local && related[selectedItem.ref_local] && (
-              <div className="location-info">
-                <h3>Localização</h3>
-                <div className="location-container">
-                  {related[selectedItem.ref_local].image_image?.all && (
-                    <div className="location-image">
-                      <img
-                        src={related[selectedItem.ref_local].image_image.all}
-                        alt={
-                          related[selectedItem.ref_local]._title?.all
-                            ? decodeHtml(related[selectedItem.ref_local]._title.all)
-                            : "Location"
-                        }
-                      />
-                    </div>
-                  )}
-                  <div className="location-details">
-                    <h4>
-                      {related[selectedItem.ref_local]._title?.all
-                        ? decodeHtml(related[selectedItem.ref_local]._title.all)
-                        : ""}
-                    </h4>
+            {selectedItem.ref_local && related[selectedItem.ref_local] && (() => {
+              // Extract location object once to avoid repetitive lookups
+              const locationObj = related[selectedItem.ref_local];
 
-                    {related[selectedItem.ref_local].text_morada?.all && (
-                      <p className="location-address">
-                        <strong>Endereço:</strong>{" "}
-                        {related[selectedItem.ref_local].text_morada.all}
-                      </p>
+              return (
+                <div className="location-info">
+                  <h3>Localização</h3>
+                  <div className="location-container">
+                    {locationObj.image_image?.all && (
+                      <div className="location-image">
+                        <img
+                          src={locationObj.image_image.all}
+                          alt={
+                            locationObj._title?.all
+                              ? decodeHtml(locationObj._title.all)
+                              : "Location"
+                          }
+                        />
+                      </div>
                     )}
+                    <div className="location-details">
+                      <h4>
+                        {locationObj._title?.all
+                          ? decodeHtml(locationObj._title.all)
+                          : ""}
+                      </h4>
 
-                    <div className="location-links">
-                      {related[selectedItem.ref_local].link_website?.all && (
-                        <a
-                          href={related[selectedItem.ref_local].link_website.all}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="location-link website-link"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          Website
-                        </a>
+                      {locationObj.text_morada?.all && (
+                        <p className="location-address">
+                          <strong>Endereço:</strong>{" "}
+                          {locationObj.text_morada.all}
+                        </p>
                       )}
 
-                      {related[selectedItem.ref_local].link_google_maps?.all && (
-                        <a
-                          href={related[selectedItem.ref_local].link_google_maps.all}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="location-link maps-link"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          Google Maps
-                        </a>
+                      <div className="location-links">
+                        {locationObj.link_website?.all && (
+                          <a
+                            href={locationObj.link_website.all}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="location-link website-link"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Website
+                          </a>
+                        )}
+
+                        {locationObj.link_google_maps?.all && (
+                          <a
+                            href={locationObj.link_google_maps.all}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="location-link maps-link"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Google Maps
+                          </a>
+                        )}
+                      </div>
+
+                      {locationObj.text_description?.all && (
+                        <SanitizedHTML
+                          html={locationObj.text_description.all}
+                          className="location-description"
+                        />
                       )}
                     </div>
-
-                    {related[selectedItem.ref_local].text_description?.all && (
-                      <SanitizedHTML
-                        html={related[selectedItem.ref_local].text_description.all}
-                        className="location-description"
-                      />
-                    )}
                   </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
         </div>
       )}
