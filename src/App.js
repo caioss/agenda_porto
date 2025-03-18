@@ -10,6 +10,43 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // Add effect to handle body scroll locking
+  useEffect(() => {
+    // Function to toggle body scroll
+    const toggleBodyScroll = (disable) => {
+      if (disable) {
+        // Save the current scroll position
+        const scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflowY = 'scroll';
+      } else {
+        // Restore the scroll position
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflowY = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    };
+
+    // Apply scroll lock when popover is open
+    if (selectedItem) {
+      toggleBodyScroll(true);
+    } else {
+      toggleBodyScroll(false);
+    }
+
+    // Clean up function to ensure scroll is restored when component unmounts
+    return () => {
+      if (selectedItem) {
+        toggleBodyScroll(false);
+      }
+    };
+  }, [selectedItem]); // This effect runs when selectedItem changes
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
