@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/agenda_porto/static/css/main.736660d4.css",
+    "main.js": "/agenda_porto/static/js/main.8326cceb.js",
+    "index.html": "/agenda_porto/index.html",
+    "main.736660d4.css.map": "/agenda_porto/static/css/main.736660d4.css.map",
+    "main.8326cceb.js.map": "/agenda_porto/static/js/main.8326cceb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.736660d4.css",
+    "static/js/main.8326cceb.js"
+  ]
+}
