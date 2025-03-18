@@ -86,6 +86,48 @@ function App() {
     });
   };
 
+  // Format date for Google Calendar URL
+  const formatGoogleCalendarDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().replace(/-|:|\.\d\d\d/g, "");
+  };
+
+  // Generate Google Calendar URL
+  const generateGoogleCalendarUrl = (item) => {
+    if (!item) return "";
+
+    const startDate = formatGoogleCalendarDate(item.datetime_start_date);
+    const endDate = formatGoogleCalendarDate(item.datetime_end_date);
+    const title = encodeURIComponent(
+      item.text_display_title?.all ? decodeHtml(item.text_display_title.all) : ""
+    );
+
+    // Get location information if available
+    let location = "";
+    if (item.ref_local && related[item.ref_local]) {
+      const locationObj = related[item.ref_local];
+      const locationName = locationObj._title?.all ? decodeHtml(locationObj._title.all) : "";
+      const locationAddress = locationObj.text_morada?.all || "";
+
+      if (locationName && locationAddress) {
+        location = encodeURIComponent(`${locationName}, ${locationAddress}`);
+      } else if (locationName) {
+        location = encodeURIComponent(locationName);
+      } else if (locationAddress) {
+        location = encodeURIComponent(locationAddress);
+      }
+    }
+
+    // Get description (remove HTML tags for Google Calendar)
+    const description = encodeURIComponent(
+      item.text_sinopse?.all
+        ? DOMPurify.sanitize(item.text_sinopse.all, { ALLOWED_TAGS: [] }).trim()
+        : ""
+    );
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${description}&location=${location}`;
+  };
+
   const isSameDay = (date1, date2) => {
     const d1 = new Date(date1);
     const d2 = new Date(date2);
@@ -199,6 +241,29 @@ function App() {
                 ? decodeHtml(selectedItem.text_display_title.all)
                 : ""}
             </h2>
+
+            {/* Date info with Google Calendar button */}
+            <div className="popover-date-actions">
+              <div className="popover-dates">
+                <p>
+                  <strong>Início:</strong> {formatDateTime(selectedItem.datetime_start_date)}
+                </p>
+                {!isSameDay(selectedItem.datetime_start_date, selectedItem.datetime_end_date) && (
+                  <p>
+                    <strong>Fim:</strong> {formatDateTime(selectedItem.datetime_end_date)}
+                  </p>
+                )}
+              </div>
+              <a
+                href={generateGoogleCalendarUrl(selectedItem)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="calendar-btn"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Adicionar ao Google Calendar
+              </a>
+            </div>
 
             {/* Event description */}
             <SanitizedHTML
