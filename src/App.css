@@ -149,6 +149,24 @@ h1 {
   margin-bottom: 10px;
 }
 
+.popover-image {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popover-image img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .card-container {
@@ -158,5 +176,16 @@ h1 {
   .popover-content {
     width: 95%;
     padding: 20px;
+  }
+}
+
+/* Adjust for larger screens */
+@media (min-width: 768px) {
+  .popover-image {
+    max-height: 400px;
+  }
+
+  .popover-image img {
+    max-height: 400px;
   }
 }

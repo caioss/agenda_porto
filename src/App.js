@@ -126,7 +126,7 @@ function App() {
                   </p>
                   {!isSameDay(item.datetime_start_date, item.datetime_end_date) && (
                     <p>
-                      <strong>Fim:</strong>{" "}
+                      <strong>Até:</strong>{" "}
                       {formatDateTime(item.datetime_end_date)}
                     </p>
                   )}
@@ -143,6 +143,19 @@ function App() {
             <button className="close-btn" onClick={() => setSelectedItem(null)}>
               ×
             </button>
+
+            {/* Add image to popover */}
+            <div className="popover-image">
+              <img
+                src={selectedItem.image_image?.all}
+                alt={
+                  selectedItem.text_display_title?.all
+                    ? decodeHtml(selectedItem.text_display_title.all)
+                    : ""
+                }
+              />
+            </div>
+
             <h2>
               {selectedItem.text_display_title?.all
                 ? decodeHtml(selectedItem.text_display_title.all)
