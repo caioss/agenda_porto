@@ -144,7 +144,7 @@ function App() {
               ×
             </button>
 
-            {/* Add image to popover */}
+            {/* Event image */}
             <div className="popover-image">
               <img
                 src={selectedItem.image_image?.all}
@@ -156,15 +156,86 @@ function App() {
               />
             </div>
 
+            {/* Event title */}
             <h2>
               {selectedItem.text_display_title?.all
                 ? decodeHtml(selectedItem.text_display_title.all)
                 : ""}
             </h2>
+
+            {/* Event description */}
             <SanitizedHTML
               html={selectedItem.text_sinopse?.all}
               className="description"
             />
+
+            {/* Location information */}
+            {selectedItem.ref_local && related[selectedItem.ref_local] && (
+              <div className="location-info">
+                <h3>Localização</h3>
+                <div className="location-container">
+                  {related[selectedItem.ref_local].image_image?.all && (
+                    <div className="location-image">
+                      <img
+                        src={related[selectedItem.ref_local].image_image.all}
+                        alt={
+                          related[selectedItem.ref_local]._title?.all
+                            ? decodeHtml(related[selectedItem.ref_local]._title.all)
+                            : "Location"
+                        }
+                      />
+                    </div>
+                  )}
+                  <div className="location-details">
+                    <h4>
+                      {related[selectedItem.ref_local]._title?.all
+                        ? decodeHtml(related[selectedItem.ref_local]._title.all)
+                        : ""}
+                    </h4>
+
+                    {related[selectedItem.ref_local].text_morada?.all && (
+                      <p className="location-address">
+                        <strong>Endereço:</strong>{" "}
+                        {related[selectedItem.ref_local].text_morada.all}
+                      </p>
+                    )}
+
+                    <div className="location-links">
+                      {related[selectedItem.ref_local].link_website?.all && (
+                        <a
+                          href={related[selectedItem.ref_local].link_website.all}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="location-link website-link"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Website
+                        </a>
+                      )}
+
+                      {related[selectedItem.ref_local].link_google_maps?.all && (
+                        <a
+                          href={related[selectedItem.ref_local].link_google_maps.all}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="location-link maps-link"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Google Maps
+                        </a>
+                      )}
+                    </div>
+
+                    {related[selectedItem.ref_local].text_description?.all && (
+                      <SanitizedHTML
+                        html={related[selectedItem.ref_local].text_description.all}
+                        className="location-description"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
