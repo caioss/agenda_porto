@@ -250,7 +250,7 @@ function App() {
 
                 <div className="date-info">
                   <p>
-                    <strong>Data:</strong>{" "}
+                    <strong>{!isSameDay(item.datetime_start_date, item.datetime_end_date) ? "De:" : "Data:"}</strong>{" "}
                     {formatDateTime(item.datetime_start_date)}
                   </p>
                   {!isSameDay(
@@ -299,7 +299,7 @@ function App() {
             <div className="popover-date-actions">
               <div className="popover-dates">
                 <p>
-                  <strong>Início:</strong>{" "}
+                  <strong>{!isSameDay(selectedItem.datetime_start_date, selectedItem.datetime_end_date) ? "De:" : "Data:"}</strong>{" "}
                   {formatDateTime(selectedItem.datetime_start_date)}
                 </p>
                 {!isSameDay(
@@ -307,7 +307,7 @@ function App() {
                   selectedItem.datetime_end_date
                 ) && (
                   <p>
-                    <strong>Fim:</strong>{" "}
+                    <strong>Até:</strong>{" "}
                     {formatDateTime(selectedItem.datetime_end_date)}
                   </p>
                 )}
