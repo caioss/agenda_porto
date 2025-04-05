@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/agenda_porto/static/css/main.b3196007.css",
-    "main.js": "/agenda_porto/static/js/main.26ca477d.js",
+    "main.js": "/agenda_porto/static/js/main.051e553c.js",
     "index.html": "/agenda_porto/index.html",
     "main.b3196007.css.map": "/agenda_porto/static/css/main.b3196007.css.map",
-    "main.26ca477d.js.map": "/agenda_porto/static/js/main.26ca477d.js.map"
+    "main.051e553c.js.map": "/agenda_porto/static/js/main.051e553c.js.map"
   },
   "entrypoints": [
     "static/css/main.b3196007.css",
-    "static/js/main.26ca477d.js"
+    "static/js/main.051e553c.js"
   ]
 }
