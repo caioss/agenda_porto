@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import DOMPurify from "dompurify";
-import apiData from "./request";
+import apiDataOriginal from "./request";
 import "./App.css";
 
 function App() {
@@ -9,6 +9,10 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  // Add state for sort order
+  const [sortBy, setSortBy] = useState("end"); // "end" for end_date, "start" for start_date
+  // Clone apiData to avoid mutating the imported object
+  const [apiData, setApiData] = useState({ ...apiDataOriginal });
   // Replace state with ref to avoid re-renders
   const scrollPositionRef = useRef(0);
 
@@ -64,31 +68,49 @@ function App() {
     };
   }, [selectedItem]); // Only run when selectedItem changes
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch("https://repeater.bondlayer.com/fetch", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(apiData),
-        });
+  // Toggle sort order function
+  const toggleSort = () => {
+    const newSortBy = sortBy === "end" ? "start" : "end";
+    setSortBy(newSortBy);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch events");
-        }
+    // Clone and update API data
+    const newApiData = { ...apiData };
+    const sortField = newSortBy === "end" ? "datetime_end_date" : "datetime_start_date";
+    newApiData.repeater.sorts[0].attr = sortField;
+    newApiData.repeater.userSorts.attr = sortField;
+    setApiData(newApiData);
 
-        const data = await response.json();
-        setItems(data.items || []);
-        setRelated(data.related || {});
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+    // Refetch data with updated apiData
+    fetchEvents(newApiData);
+  };
+
+  // Extract fetchEvents function so it can be reused
+  const fetchEvents = async (data = apiData) => {
+    setLoading(true);
+    try {
+      const response = await fetch("https://repeater.bondlayer.com/fetch", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch events");
       }
-    };
 
+      const responseData = await response.json(); // Changed variable name to avoid conflict
+      setItems(responseData.items || []);
+      setRelated(responseData.related || {});
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchEvents();
   }, []);
 
@@ -183,6 +205,13 @@ function App() {
   return (
     <div className="App">
       <h1>Agenda Porto</h1>
+
+      {/* Add sort toggle button */}
+      <div className="sort-controls">
+        <button onClick={toggleSort} className="sort-button">
+          Ordenar por {sortBy === "end" ? "Data de Início" : "Data de Fim"}
+        </button>
+      </div>
 
       {loading ? (
         <div className="loading">Carregando eventos...</div>

@@ -93,6 +93,28 @@ h1 {
   margin-bottom: 4px;
 }
 
+/* Add styles for sort controls */
+.sort-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.sort-button {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+}
+
+.sort-button:hover {
+  background-color: #2980b9;
+}
+
 /* Popover styles */
 .popover-overlay {
   position: fixed;
