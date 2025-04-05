@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DOMPurify from "dompurify";
 import apiData from "./request";
 import "./App.css";
@@ -9,43 +9,60 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  // Replace state with ref to avoid re-renders
+  const scrollPositionRef = useRef(0);
 
-  // Add effect to handle body scroll locking
+  // Simplified effect that only depends on selectedItem
   useEffect(() => {
-    // Function to toggle body scroll
-    const toggleBodyScroll = (disable) => {
-      if (disable) {
-        // Save the current scroll position
-        const scrollY = window.scrollY;
-        document.body.style.position = "fixed";
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.width = "100%";
-        document.body.style.overflowY = "scroll";
-      } else {
-        // Restore the scroll position
-        const scrollY = document.body.style.top;
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
-        document.body.style.overflowY = "";
-        window.scrollTo(0, parseInt(scrollY || "0") * -1);
-      }
-    };
-
-    // Apply scroll lock when popover is open
-    if (selectedItem) {
-      toggleBodyScroll(true);
-    } else {
-      toggleBodyScroll(false);
-    }
-
-    // Clean up function to ensure scroll is restored when component unmounts
-    return () => {
+    // Function to handle body scroll locking
+    const handleBodyScroll = () => {
       if (selectedItem) {
-        toggleBodyScroll(false);
+        // Save the current scroll position
+        scrollPositionRef.current = window.scrollY;
+
+        // Calculate scrollbar width to prevent content shift
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+
+        // Lock the body in place
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPositionRef.current}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+      } else {
+        // Restore body styles first
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        // Then restore scroll position if we have one
+        if (scrollPositionRef.current > 0) {
+          window.scrollTo(0, scrollPositionRef.current);
+        }
       }
     };
-  }, [selectedItem]); // This effect runs when selectedItem changes
+
+    // Call the handler immediately when selectedItem changes
+    handleBodyScroll();
+
+    // Clean up function
+    return () => {
+      // Only restore scroll if modal was open when unmounting
+      if (selectedItem) {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        if (scrollPositionRef.current > 0) {
+          window.scrollTo(0, scrollPositionRef.current);
+        }
+      }
+    };
+  }, [selectedItem]); // Only run when selectedItem changes
 
   useEffect(() => {
     const fetchEvents = async () => {
